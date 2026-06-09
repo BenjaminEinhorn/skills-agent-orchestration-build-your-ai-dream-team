@@ -1,0 +1,10 @@
+{
+  "projects": [
+    {"name":"Website Redesign","owner":"Aisha K.","status":"In Progress","recentActivity":"Deployed header update","priority":"High"},
+    {"name":"Mobile App Onboarding","owner":"Leo D.","status":"At Risk","recentActivity":"Blocked by API rate limit","priority":"Medium"},
+    {"name":"Data Pipeline Upgrade","owner":"N. Ops","status":"Complete","recentActivity":"ETL migrated","priority":"High"},
+    {"name":"CRM Integration","owner":"Sam R.","status":"In Progress","recentActivity":"Auth flow implemented","priority":"Low"},
+    {"name":"Marketing Campaign","owner":"T. Nguyen","status":"Planned","recentActivity":"Kickoff meeting scheduled","priority":"Medium"},
+    {"name":"Security Audit","owner":"Ops Team","status":"At Risk","recentActivity":"Pending remediation","priority":"High"}
+  ]
+}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Project Pulse</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Project Pulse</h1>
+    <p class="lead">A quick view of active projects and their recent activity.</p>
+  </header>
+
+  <main class="dashboard" id="dashboard" aria-live="polite">
+    <div class="loading" id="loading">Loading projects…</div>
+    <div class="error" id="error" role="status" aria-hidden="true" style="display:none;color:#b00020;"></div>
+    <div class="cards" id="cards" aria-label="Projects list"></div>
+  </main>
+
+  <footer class="site-footer">
+    <small>Project Pulse — static demo</small>
+  </footer>
+
+  <script>
+  async function loadProjects() {
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const cards = document.getElementById('cards');
+    try {
+      const res = await fetch('project-data.json', {cache: 'no-store'});
+      if (!res.ok) throw new Error('Failed to fetch data');
+      const data = await res.json();
+      const projects = data.projects || [];
+      loading.style.display = 'none';
+      if (!projects.length) {
+        cards.innerHTML = '<p class="empty">No projects found.</p>';
+        return;
+      }
+
+      cards.innerHTML = projects.map(p => {
+        const name = escapeHtml(p.name || 'Untitled');
+        const owner = escapeHtml(p.owner || 'Unassigned');
+        const status = escapeHtml(p.status || 'Unknown');
+        const recent = escapeHtml(p.recentActivity || 'No recent activity');
+        const priority = escapeHtml(p.priority || 'None');
+        return `
+          <article class="project-card" role="article" aria-label="Project ${name}">
+            <header class="card-header">
+              <h2 class="project-title">${name}</h2>
+              <div class="badges">
+                <span class="status-badge">${status}</span>
+                <span class="priority">${priority}</span>
+              </div>
+            </header>
+            <div class="card-body">
+              <p class="meta"><strong>Owner:</strong> ${owner}</p>
+              <p class="recent"><strong>Recent:</strong> ${recent}</p>
+            </div>
+          </article>`;
+      }).join('');
+    } catch (e) {
+      loading.style.display = 'none';
+      error.style.display = 'block';
+      error.textContent = 'Unable to load project data.';
+      console.error(e);
+    }
+  }
+
+  function escapeHtml(s){ return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;'); }
+
+  loadProjects();
+  </script>
+</body>
+</html>
